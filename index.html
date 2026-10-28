@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本語 과거형 동물 모험 🐾</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Safe cute round font stack without external link failure */
+        body {
+            font-family: "Gowun Dodum", "Jua", "Nunito", "Segoe UI Rounded", -apple-system, BlinkMacSystemFont, "Malgun Gothic", "MapleStory", sans-serif;
+            background-color: #0b1329;
+            color: #f8fafc;
+            user-select: none;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .jp-font {
+            font-family: "Hiragino Maru Gothic ProN", "Meiryo UI", "Kosugi Maru", "MotoyaLMaru", sans-serif;
+            letter-spacing: 0.03em;
+        }
+
+        /* Glassmorphism Dialogue Panel */
+        .dialogue-box {
+            background: rgba(15, 23, 42, 0.95);
+            border: 3px solid #38bdf8;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Float Bounce Animation for Cute Character */
+        @keyframes gentle-bounce {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(1.5deg); }
+        }
+        .float-avatar {
+            animation: gentle-bounce 2.8s ease-in-out infinite;
+        }
+
+        /* Custom Scrollbar for Choice Box */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between bg-slate-950 text-slate-100">
+
+    <!-- Top Header Bar -->
+    <header class="w-full bg-slate-900/90 border-b border-slate-800 sticky top-0 z-40 px-3 py-2 sm:px-4 sm:py-2.5">
+        <div class="max-w-3xl mx-auto flex justify-between items-center">
+            <!-- Game Title & Stage -->
+            <div class="flex items-center gap-2">
+                <span class="bg-gradient-to-r from-pink-400 to-amber-400 text-slate-950 font-black px-2.5 py-1 rounded-xl text-xs">
+                    STAGE <span id="stage-num">1</span>/4
+                </span>
+                <h1 class="text-xs sm:text-base font-extrabold text-sky-300">
+                    日本語 과거형 동물 모험 🐾
+                </h1>
+            </div>
+
+            <!-- Header Buttons -->
+            <div class="flex items-center gap-2 text-xs sm:text-sm">
+                <button id="btn-open-book" class="bg-pink-500 hover:bg-pink-400 text-slate-950 px-2.5 py-1.5 rounded-2xl text-xs font-black transition flex items-center gap-1 shadow-md active:scale-95">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                    <span>동물 도감</span>
+                </button>
+                <button id="btn-grammar" class="bg-indigo-600 hover:bg-indigo-500 text-white px-2.5 py-1.5 rounded-2xl text-xs font-bold transition flex items-center gap-1 active:scale-95">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>문법 노트</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Viewport -->
+    <main class="max-w-2xl w-full mx-auto px-2 sm:px-3 py-2 flex-grow flex flex-col justify-center">
+
+        <!-- Stage Screen Container -->
+        <div class="relative w-full rounded-3xl overflow-hidden border-2 border-slate-800 shadow-2xl bg-slate-900 flex flex-col min-h-[520px]">
+
+            <!-- SVG Pastel Background Layer -->
+            <div id="stage-bg-svg" class="absolute inset-0 z-0"></div>
+
+            <!-- Stage Cover Overlay -->
+            <div id="chapter-cover" class="absolute inset-0 bg-slate-950/95 z-30 flex flex-col items-center justify-center p-6 text-center backdrop-blur-md">
+                <div class="w-20 h-20 bg-pink-400/20 text-pink-300 rounded-full flex items-center justify-center mb-3 text-4xl border border-pink-400/30 shadow-inner">
+                    <i class="fa-solid fa-paw"></i>
+                </div>
+                <span id="cover-stage-sub" class="text-sky-300 text-xs font-black tracking-widest uppercase mb-1">STAGE 1</span>
+                <h2 id="cover-stage-title" class="text-2xl font-black text-white jp-font mb-2">오키나와 여행</h2>
+                <p id="cover-stage-desc" class="text-slate-300 text-xs max-w-sm mb-6">시바견 모모와 함께 오키나와 여행 기억을 되살려봐요!</p>
+                <button id="btn-start-stage" class="px-8 py-3.5 bg-gradient-to-r from-amber-300 to-pink-400 hover:brightness-110 text-slate-950 font-black text-sm rounded-2xl shadow-xl transition transform hover:scale-105 flex items-center gap-2">
+                    <span>여행 시작하기</span>
+                    <i class="fa-solid fa-play"></i>
+                </button>
+            </div>
+
+            <!-- Location Badge -->
+            <div class="relative z-10 p-3">
+                <span id="location-tag" class="bg-slate-950/80 border border-slate-700 text-slate-200 px-3.5 py-1.5 rounded-full text-xs font-bold inline-flex items-center gap-2 shadow">
+                    <i class="fa-solid fa-location-dot text-pink-400"></i> 오키나와 해변
+                </span>
+            </div>
+
+            <!-- Character Display Stage -->
+            <div class="relative z-10 flex-grow flex items-end justify-center pb-2">
+                <div class="float-avatar w-44 sm:w-52 h-44 sm:h-52 relative">
+                    <div id="character-svg-box" class="w-full h-full drop-shadow-2xl"></div>
+                </div>
+            </div>
+
+            <!-- Dialogue & Interactive Quiz Box -->
+            <div class="relative z-20 p-2 sm:p-3 pt-0">
+                <div class="dialogue-box rounded-2xl p-3.5 sm:p-4 relative">
+                    
+                    <!-- Speaker Label & Voice Button -->
+                    <div class="flex justify-between items-center -mt-6 sm:-mt-7 mb-2">
+                        <div class="bg-gradient-to-r from-pink-400 to-amber-300 text-slate-950 text-xs font-black px-3.5 py-1 rounded-xl shadow-md border border-pink-300 flex items-center gap-1.5">
+                            <i id="speaker-icon" class="fa-solid fa-dog"></i>
+                            <span id="speaker-name">시바견 모모</span>
+                        </div>
+                        
+                        <!-- Speech TTS Replay Button -->
+                        <button id="btn-speak-again" class="bg-sky-400 hover:bg-sky-300 text-slate-950 text-xs font-black px-2.5 py-1 rounded-xl shadow flex items-center gap-1 transition active:scale-95">
+                            <i class="fa-solid fa-volume-high"></i>
+                            <span>발음 다시듣기</span>
+                        </button>
+                    </div>
+
+                    <!-- Speech Text Display -->
+                    <div class="min-h-[75px] flex flex-col justify-center my-1">
+                        <!-- Prominent Japanese Text -->
+                        <div id="main-jp-text" class="jp-font text-xl sm:text-2xl font-black text-amber-300 leading-snug mb-1"></div>
+                        <!-- Korean Translation Subtext -->
+                        <div id="sub-kr-text" class="text-xs sm:text-sm text-slate-300 font-medium"></div>
+                    </div>
+
+                    <!-- Interactive Choices Box -->
+                    <div id="quiz-choices-box" class="mt-2 hidden">
+                        <div id="choices-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[160px] overflow-y-auto custom-scroll pr-1"></div>
+                    </div>
+
+                    <!-- Next Step Button -->
+                    <div id="action-prompt-row" class="flex justify-end items-center mt-2 pt-2 border-t border-slate-800/80">
+                        <button id="btn-next-step" class="bg-sky-400 hover:bg-sky-300 text-slate-950 font-black px-4 py-2 rounded-xl text-xs sm:text-sm flex items-center gap-1.5 transition shadow active:scale-95">
+                            <span>다음으로 (Next)</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Modal 1: Animal Collection Book ("동물 친구 도감") -->
+    <div id="book-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-3 hidden">
+        <div class="bg-slate-900 border-2 border-pink-400 rounded-3xl max-w-md w-full max-h-[85vh] overflow-y-auto p-4 sm:p-5 relative custom-scroll shadow-2xl">
+            <button id="btn-close-book" class="absolute top-3 right-3 text-slate-400 hover:text-white text-xl p-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-lg font-black text-white mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-heart text-pink-400"></i> 동물 친구 도감
+            </h3>
+            <p class="text-xs text-slate-400 mb-4">함께 일본을 여행하며 친해진 소중한 동물 친구들입니다!</p>
+
+            <div id="friends-list-container" class="space-y-3"></div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Japanese Grammar Cheat Sheet -->
+    <div id="grammar-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-3 hidden">
+        <div class="bg-slate-900 border-2 border-indigo-500 rounded-3xl max-w-md w-full max-h-[85vh] overflow-y-auto p-4 sm:p-5 relative custom-scroll shadow-2xl">
+            <button id="btn-close-modal" class="absolute top-3 right-3 text-slate-400 hover:text-white text-xl p-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-lg font-extrabold text-white mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-book-open text-indigo-400"></i> 일본어 형용사 과거형 노트
+            </h3>
+            
+            <div class="space-y-3 text-xs sm:text-sm">
+                <div class="bg-slate-800/90 p-3.5 rounded-2xl border border-slate-700">
+                    <h4 class="font-bold text-sky-300 mb-1">1. い로 끝나는 형용사 (이형용사)</h4>
+                    <p class="text-slate-300 mb-2">끝의 <span class="text-rose-400 font-bold">い</span>를 빼고 <span class="text-emerald-400 font-bold">かったです</span>를 붙입니다.</p>
+                    <div class="bg-slate-950 p-2.5 rounded-xl text-emerald-300 font-mono space-y-1">
+                        <div>• おいしい ➔ おいしかったです (맛있었습니다)</div>
+                        <div>• あつい ➔ あつかったです (더웠습니다)</div>
+                        <div>• たのしい ➔ たのしかったです (즐거웠습니다)</div>
+                        <div>• むずかしい ➔ むずかしかったです (어려웠습니다)</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/90 p-3.5 rounded-2xl border border-slate-700">
+                    <h4 class="font-bold text-pink-300 mb-1">2. だ로 끝나는 형용사 (나형용사)</h4>
+                    <p class="text-slate-300 mb-2">끝의 <span class="text-rose-400 font-bold">だ</span>를 빼고 <span class="text-emerald-400 font-bold">でした</span>를 붙입니다.</p>
+                    <div class="bg-slate-950 p-2.5 rounded-xl text-emerald-300 font-mono space-y-1">
+                        <div>• きれいだ ➔ きれいでした (예뻤습니다)</div>
+                        <div>• たいへんだ ➔ たいへんでした (힘들었습니다)</div>
+                        <div>• にぎやかだ ➔ にぎやかでした (번화했습니다)</div>
+                        <div>• すきだ ➔ すきでした (좋아했습니다)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Completion Screen with Animal Friend Unlocks -->
+    <div id="result-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-lg z-50 flex items-center justify-center p-3 hidden">
+        <div class="bg-slate-900 border-2 border-amber-400 rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-5 sm:p-6 text-center shadow-2xl custom-scroll">
+            <div class="w-16 h-16 bg-amber-400/20 text-amber-300 rounded-full flex items-center justify-center mx-auto mb-2 text-3xl border border-amber-400/30 shadow-inner">
+                <i class="fa-solid fa-crown"></i>
+            </div>
+            <h3 class="text-2xl font-black text-white mb-1">おめでとう! 여행 완주 🎉</h3>
+            <p class="text-xs text-amber-300 mb-5 font-bold">모든 여행을 마치고 세 동물 친구의 마음을 얻었어요!</p>
+            
+            <!-- Acquired Friends Gallery -->
+            <div class="grid grid-cols-3 gap-2 mb-6">
+                <div class="bg-slate-800 p-2 rounded-2xl border border-amber-400/50 flex flex-col items-center">
+                    <div id="momo-result-card" class="w-16 h-16 mb-1"></div>
+                    <span class="text-xs font-black text-orange-300">시바견 모모</span>
+                    <span class="text-[10px] bg-pink-500/30 text-pink-300 px-1.5 py-0.5 rounded-full mt-1">ともだち１</span>
+                </div>
+                <div class="bg-slate-800 p-2 rounded-2xl border border-amber-400/50 flex flex-col items-center">
+                    <div id="tama-result-card" class="w-16 h-16 mb-1"></div>
+                    <span class="text-xs font-black text-sky-300">고양이 타마</span>
+                    <span class="text-[10px] bg-pink-500/30 text-pink-300 px-1.5 py-0.5 rounded-full mt-1">ともだち２</span>
+                </div>
+                <div class="bg-slate-800 p-2 rounded-2xl border border-amber-400/50 flex flex-col items-center">
+                    <div id="mimi-result-card" class="w-16 h-16 mb-1"></div>
+                    <span class="text-xs font-black text-pink-300">토끼 미미</span>
+                    <span class="text-[10px] bg-pink-500/30 text-pink-300 px-1.5 py-0.5 rounded-full mt-1">ともだち3</span>
+                </div>
+            </div>
+
+            <button id="btn-restart-game" class="w-full py-3.5 bg-gradient-to-r from-amber-300 to-pink-400 hover:brightness-110 text-slate-950 font-black text-sm rounded-2xl shadow-xl transition active:scale-95">
+                처음부터 다시 여행하기
+            </button>
+        </div>
+    </div>
+
+    <!-- Core Logic JavaScript -->
+    <script>
+        // Web Speech API - Japanese TTS
+        const Speech = {
+            speak(text) {
+                if (!('speechSynthesis' in window)) return;
+                try {
+                    window.speechSynthesis.cancel();
+                    const cleanJp = text.replace(/[^\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF。？]/g, '');
+                    if (!cleanJp) return;
+
+                    const ut = new SpeechSynthesisUtterance(cleanJp);
+                    ut.lang = 'ja-JP';
+                    ut.rate = 0.88;
+                    ut.pitch = 1.15;
+                    window.speechSynthesis.speak(ut);
+                } catch(e) {
+                    console.log("Speech API Error fallback", e);
+                }
+            }
+        };
+
+        // Web Audio Synthesizer (No external audio files needed)
+        const SoundFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            playCorrect() {
+                try {
+                    this.init();
+                    const now = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(now + 0.35);
+                } catch(e){}
+            },
+            playWrong() {
+                try {
+                    this.init();
+                    const now = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, now);
+                    osc.frequency.setValueAtTime(170, now + 0.1);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(now + 0.25);
+                } catch(e){}
+            }
+        };
+
+        // Fully Validated Cute Animal SVGs
+        const CuteAnimals = {
+            momo(mood = 'happy') { // Shiba Inu
+                let eyesAndMouth = `
+                    <circle cx="72" cy="95" r="8" fill="#1e293b" />
+                    <circle cx="128" cy="95" r="8" fill="#1e293b" />
+                    <circle cx="75" cy="92" r="3" fill="#ffffff" />
+                    <circle cx="131" cy="92" r="3" fill="#ffffff" />
+                    <path d="M 94 113 Q 100 120 106 113" stroke="#1e293b" stroke-width="3" fill="none" stroke-linecap="round" />
+                `;
+
+                if (mood === 'heart') {
+                    eyesAndMouth = `
+                        <path d="M 65 95 C 65 88, 75 88, 75 95 C 75 88, 85 88, 85 95 C 85 102, 75 107, 75 110 C 75 107, 65 102, 65 95 Z" fill="#f43f5e" />
+                        <path d="M 115 95 C 115 88, 125 88, 125 95 C 125 88, 135 88, 135 95 C 135 102, 125 107, 125 110 C 125 107, 115 102, 115 95 Z" fill="#f43f5e" />
+                        <path d="M 92 114 Q 100 124 108 114" stroke="#1e293b" stroke-width="3.5" fill="#f43f5e" stroke-linecap="round" />
+                    `;
+                } else if (mood === 'sweat') {
+                    eyesAndMouth = `
+                        <ellipse cx="72" cy="95" rx="7" ry="4" fill="#1e293b" />
+                        <ellipse cx="128" cy="95" rx="7" ry="4" fill="#1e293b" />
+                        <path d="M 95 117 Q 100 112 105 117" stroke="#1e293b" stroke-width="3" fill="none" stroke-linecap="round" />
+                        <path d="M 148 75 Q 158 85 153 95 Q 143 85 148 75 Z" fill="#38bdf8" />
+                    `;
+                }
+
+                return `<svg viewBox="0 0 200 200" class="w-full h-full">
+                    <path d="M 42 65 Q 22 18 68 45 Z" fill="#fb923c" />
+                    <path d="M 49 60 Q 35 28 66 48 Z" fill="#fdba74" />
+                    <path d="M 158 65 Q 178 18 132 45 Z" fill="#fb923c" />
+                    <path d="M 151 60 Q 165 28 134 48 Z" fill="#fdba74" />
+                    <circle cx="100" cy="105" r="56" fill="#fb923c" />
+                    <ellipse cx="100" cy="118" rx="36" ry="28" fill="#fff7ed" />
+                    <circle cx="60" cy="112" r="11" fill="#f43f5e" opacity="0.4" />
+                    <circle cx="140" cy="112" r="11" fill="#f43f5e" opacity="0.4" />
+                    <ellipse cx="100" cy="107" rx="6" ry="4.5" fill="#1e293b" />
+                    ${eyesAndMouth}
+                </svg>`;
+            },
+            tama(mood = 'happy') { // Cat
+                let eyesAndMouth = `
+                    <circle cx="72" cy="95" r="8" fill="#0f172a" />
+                    <circle cx="128" cy="95" r="8" fill="#0f172a" />
+                    <circle cx="75" cy="92" r="3" fill="#ffffff" />
+                    <circle cx="131" cy="92" r="3" fill="#ffffff" />
+                    <path d="M 94 112 Q 100 117 106 112" stroke="#0f172a" stroke-width="2.5" fill="none" stroke-linecap="round" />
+                `;
+
+                if (mood === 'heart') {
+                    eyesAndMouth = `
+                        <path d="M 65 95 C 65 88, 75 88, 75 95 C 75 88, 85 88, 85 95 C 85 102, 75 107, 75 110 C 75 107, 65 102, 65 95 Z" fill="#f43f5e" />
+                        <path d="M 115 95 C 115 88, 125 88, 125 95 C 125 88, 135 88, 135 95 C 135 102, 125 107, 125 110 C 125 107, 115 102, 115 95 Z" fill="#f43f5e" />
+                        <path d="M 93 112 Q 100 122 107 112" stroke="#0f172a" stroke-width="3" fill="#f43f5e" stroke-linecap="round" />
+                    `;
+                } else if (mood === 'sweat') {
+                    eyesAndMouth = `
+                        <path d="M 65 95 Q 72 88 79 95" stroke="#0f172a" stroke-width="3" fill="none" stroke-linecap="round" />
+                        <path d="M 121 95 Q 128 88 135 95" stroke="#0f172a" stroke-width="3" fill="none" stroke-linecap="round" />
+                        <path d="M 95 116 Q 100 112 105 116" stroke="#0f172a" stroke-width="2.5" fill="none" stroke-linecap="round" />
+                        <path d="M 148 75 Q 158 85 153 95 Q 143 85 148 75 Z" fill="#38bdf8" />
+                    `;
+                }
+
+                return `<svg viewBox="0 0 200 200" class="w-full h-full">
+                    <polygon points="35,60 55,15 85,50" fill="#38bdf8"/>
+                    <polygon points="43,55 57,25 78,48" fill="#bae6fd"/>
+                    <polygon points="165,60 145,15 115,50" fill="#38bdf8"/>
+                    <polygon points="157,55 143,25 122,48" fill="#bae6fd"/>
+                    <circle cx="100" cy="105" r="56" fill="#7dd3fc" />
+                    <ellipse cx="100" cy="118" rx="32" ry="24" fill="#ffffff" />
+                    <circle cx="60" cy="112" r="11" fill="#f43f5e" opacity="0.35" />
+                    <circle cx="140" cy="112" r="11" fill="#f43f5e" opacity="0.35" />
+                    <polygon points="97,105 103,105 100,108" fill="#f43f5e" />
+                    ${eyesAndMouth}
+                </svg>`;
+            },
+            mimi(mood = 'happy') { // Bunny
+                let eyesAndMouth = `
+                    <circle cx="75" cy="106" r="8" fill="#1e293b" />
+                    <circle cx="125" cy="106" r="8" fill="#1e293b" />
+                    <circle cx="77" cy="103" r="3" fill="#ffffff" />
+                    <circle cx="127" cy="103" r="3" fill="#ffffff" />
+                    <path d="M 95 120 Q 100 125 105 120" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round" />
+                `;
+
+                if (mood === 'heart') {
+                    eyesAndMouth = `
+                        <path d="M 68 106 C 68 99, 78 99, 78 106 C 78 99, 88 99, 88 106 C 88 113, 78 118, 78 121 C 78 118, 68 113, 68 106 Z" fill="#f43f5e" />
+                        <path d="M 118 106 C 118 99, 128 99, 128 106 C 128 99, 138 99, 138 106 C 138 113, 128 118, 128 121 C 128 118, 118 113, 118 106 Z" fill="#f43f5e" />
+                        <path d="M 94 121 Q 100 129 106 121" stroke="#1e293b" stroke-width="3" fill="#f43f5e" stroke-linecap="round" />
+                    `;
+                } else if (mood === 'sweat') {
+                    eyesAndMouth = `
+                        <path d="M 68 106 Q 75 99 82 106" stroke="#1e293b" stroke-width="3" fill="none" stroke-linecap="round" />
+                        <path d="M 118 106 Q 125 99 132 106" stroke="#1e293b" stroke-width="3" fill="none" stroke-linecap="round" />
+                        <path d="M 95 123 Q 100 119 105 123" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round" />
+                        <path d="M 148 85 Q 158 95 153 105 Q 143 95 148 85 Z" fill="#38bdf8" />
+                    `;
+                }
+
+                return `<svg viewBox="0 0 200 200" class="w-full h-full">
+                    <rect x="58" y="10" width="24" height="75" rx="12" fill="#f472b6" />
+                    <rect x="63" y="18" width="14" height="58" rx="7" fill="#fbcfe8" />
+                    <rect x="118" y="10" width="24" height="75" rx="12" fill="#f472b6" />
+                    <rect x="123" y="18" width="14" height="58" rx="7" fill="#fbcfe8" />
+                    <circle cx="100" cy="115" r="52" fill="#f472b6" />
+                    <ellipse cx="100" cy="126" rx="28" ry="20" fill="#ffffff" />
+                    <circle cx="64" cy="120" r="10" fill="#e11d48" opacity="0.3" />
+                    <circle cx="136" cy="120" r="10" fill="#e11d48" opacity="0.3" />
+                    ${eyesAndMouth}
+                </svg>`;
+            }
+        };
+
+        // Stage Background SVGs
+        const StageBackgrounds = {
+            beach: `<svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 400 300">
+                <defs>
+                    <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#bae6fd"/></linearGradient>
+                    <linearGradient id="sea1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#0891b2"/></linearGradient>
+                </defs>
+                <rect width="400" height="180" fill="url(#sky1)"/>
+                <rect y="180" width="400" height="50" fill="url(#sea1)"/>
+                <path d="M0 225 Q200 205 400 225 L400 300 L0 300 Z" fill="#fef08a"/>
+                <circle cx="340" cy="50" r="28" fill="#fde047" opacity="0.9"/>
+            </svg>`,
+            festival: `<svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 400 300">
+                <rect width="400" height="300" fill="#0f172a"/>
+                <circle cx="90" cy="70" r="35" fill="none" stroke="#f43f5e" stroke-width="4" stroke-dasharray="6,6"/>
+                <circle cx="310" cy="65" r="40" fill="none" stroke="#38bdf8" stroke-width="4" stroke-dasharray="8,8"/>
+                <circle cx="200" cy="100" r="25" fill="none" stroke="#facc15" stroke-width="3"/>
+            </svg>`,
+            cafe: `<svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 400 300">
+                <rect width="400" height="300" fill="#1e1b4b"/>
+                <rect x="40" y="70" width="320" height="150" rx="16" fill="#065f46" stroke="#10b981" stroke-width="4"/>
+            </svg>`,
+            restaurant: `<svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 400 300">
+                <rect width="400" height="300" fill="#312e81"/>
+                <circle cx="200" cy="150" r="120" fill="#4338ca" opacity="0.5"/>
+            </svg>`
+        };
+
+        // Game Curriculum
+        const STAGES = [
+            {
+                id: 1,
+                title: "오키나와 여행",
+                location: "오키나와 해변",
+                bgSvg: StageBackgrounds.beach,
+                character: "momo",
+                speaker: "시바견 모모 🐶",
+                speakerIcon: "fa-dog",
+                steps: [
+                    {
+                        jpText: "おきなわは どうでしたか。",
+                        krText: "(오키나와는 어땠습니까?)",
+                        type: "dialogue"
+                    },
+                    {
+                        jpText: "‘덥다(あつい)’의 올바른 정중 과거형은?",
+                        krText: "제시어: あつい (덥다 - い형용사)",
+                        type: "quiz",
+                        speechText: "あつい",
+                        options: [
+                            { text: "あつかったです", correct: true, feedback: "정답! い를 지우고 かったです를 붙입니다." },
+                            { text: "あついでした", correct: false, feedback: "오답! い형용사에 でした만 붙이면 틀려요." },
+                            { text: "あつでした", correct: false, feedback: "오답! 올바른 변형은 あつかったです 입니다." },
+                            { text: "あつかったでした", correct: false, feedback: "오답! かったです 뒤에 でした를 또 붙이지 않아요." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "축제 & 시험",
+                location: "축제장 & 학교",
+                bgSvg: StageBackgrounds.festival,
+                character: "tama",
+                speaker: "고양이 타마 🐱",
+                speakerIcon: "fa-cat",
+                steps: [
+                    {
+                        jpText: "はなびたいかいは どうでしたか。",
+                        krText: "(불꽃놀이 축제는 어땠습니까?)",
+                        type: "dialogue"
+                    },
+                    {
+                        jpText: "‘즐거웠습니다’의 올바른 표현은?",
+                        krText: "제시어: たのしい (즐겁다 - い형용사)",
+                        type: "quiz",
+                        speechText: "たのしい",
+                        options: [
+                            { text: "たのしかったです", correct: true, feedback: "정답! たのしい ➔ たのしかったです" },
+                            { text: "たのしいでした", correct: false, feedback: "오답! い를 없애고 かったです를 붙여야 해요." },
+                            { text: "たのしでした", correct: false, feedback: "오답! かったです 형태가 빠졌어요." },
+                            { text: "たのしかったでした", correct: false, feedback: "오답! 중복 표현입니다." }
+                        ]
+                    },
+                    {
+                        jpText: "‘예뻤습니다’의 올바른 표현은?",
+                        krText: "제시어: きれいだ (예쁘다 - な형용사)",
+                        type: "quiz",
+                        speechText: "きれいだ",
+                        options: [
+                            { text: "きれいでした", correct: true, feedback: "정답! きれいだ는 な형용사이므로 でした가 붙습니다!" },
+                            { text: "きれいかったです", correct: false, feedback: "함정 오답! い로 끝나보이지만 な형용사입니다!" },
+                            { text: "きれいだでした", correct: false, feedback: "오답! だ를 삭제하고 でした를 붙여야 해요." },
+                            { text: "きれいかったですでした", correct: false, feedback: "오답! 잘못된 형태입니다." }
+                        ]
+                    },
+                    {
+                        jpText: "‘어려웠습니다’의 올바른 표현은?",
+                        krText: "제시어: むずかしい (어렵다 - い형용사)",
+                        type: "quiz",
+                        speechText: "むずかしい",
+                        options: [
+                            { text: "むずかしかったです", correct: true, feedback: "정답! むずかしい ➔ むずかしかったです" },
+                            { text: "むずかしいでした", correct: false, feedback: "오답! い를 없애야 합니다." },
+                            { text: "むずかしでした", correct: false, feedback: "오답! かったです가 필요해요." },
+                            { text: "むずかしかったでした", correct: false, feedback: "오답! 잘못된 변형입니다." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "알바 일상",
+                location: "도쿄 카페",
+                bgSvg: StageBackgrounds.cafe,
+                character: "mimi",
+                speaker: "토끼 미미 🐰",
+                speakerIcon: "fa-rabbit",
+                steps: [
+                    {
+                        jpText: "バイトは どうでしたか。",
+                        krText: "(알바는 어땠습니까?)",
+                        type: "dialogue"
+                    },
+                    {
+                        jpText: "‘힘들었습니다’의 올바른 표현은?",
+                        krText: "제시어: たいへんだ (힘들다 - な형용사)",
+                        type: "quiz",
+                        speechText: "たいへんだ",
+                        options: [
+                            { text: "たいへんでした", correct: true, feedback: "정답! たいへんだ ➔ たいへんでした" },
+                            { text: "たいへんかったです", correct: false, feedback: "오답! な형용사에는 かったです를 쓰지 않아요." },
+                            { text: "たいへんだでした", correct: false, feedback: "오답! だ를 삭제하고 でした를 써야 합니다." },
+                            { text: "たいへんでしたかったです", correct: false, feedback: "오답! 잘못된 표현입니다." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "맛집 & 거리 구경",
+                location: "시부야 거리",
+                bgSvg: StageBackgrounds.restaurant,
+                character: "momo",
+                speaker: "시바견 모모 🐶",
+                speakerIcon: "fa-dog",
+                steps: [
+                    {
+                        jpText: "‘맛있었습니다’의 올바른 표현은?",
+                        krText: "제시어: おいしい (맛있다 - い형용사)",
+                        type: "quiz",
+                        speechText: "おいしい",
+                        options: [
+                            { text: "おいしかったです", correct: true, feedback: "정답! おいしい ➔ おいしかったです" },
+                            { text: "おいしいでした", correct: false, feedback: "오답! い를 없애고 かったです를 붙입니다." },
+                            { text: "おいしかったでした", correct: false, feedback: "오답! 잘못된 형태입니다." },
+                            { text: "おいしでした", correct: false, feedback: "오답! 형태가 부족합니다." }
+                        ]
+                    },
+                    {
+                        jpText: "‘번화했습니다(북적였습니다)’의 올바른 표현은?",
+                        krText: "제시어: にぎやかだ (번화하다 - な형용사)",
+                        type: "quiz",
+                        speechText: "にぎやかだ",
+                        options: [
+                            { text: "にぎやかでした", correct: true, feedback: "정답! にぎやかだ ➔ にぎやかでした" },
+                            { text: "にぎやかかったです", correct: false, feedback: "오답! な형용사는 でした가 붙습니다." },
+                            { text: "にぎやかだでした", correct: false, feedback: "오답! だ를 빼야 합니다." },
+                            { text: "にぎやかかった", correct: false, feedback: "오답! 올바른 과거형이 아닙니다." }
+                        ]
+                    },
+                    {
+                        jpText: "‘좋아했습니다’의 올바른 표현은?",
+                        krText: "제시어: すきだ (좋아하다 - な형용사)",
+                        type: "quiz",
+                        speechText: "すきだ",
+                        options: [
+                            { text: "すきでした", correct: true, feedback: "정답! すきだ ➔ すきでした" },
+                            { text: "すきかったです", correct: false, feedback: "오답! すきだ는 な형용사입니다!" },
+                            { text: "すきだでした", correct: false, feedback: "오답! だ를 제거해야 합니다." },
+                            { text: "すきかった", correct: false, feedback: "오답! 잘못된 형태입니다." }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // Animal Encyclopedia Profiles
+        const ANIMAL_PROFILES = [
+            {
+                id: 'momo',
+                name: '시바견 모모 🐶',
+                favFood: '달콤한 고구마 🍠',
+                personality: '밝고 용감하며 오키나와 해변을 좋아해요!'
+            },
+            {
+                id: 'tama',
+                name: '고양이 타마 🐱',
+                favFood: '참치 파르페 🐟',
+                personality: '호기심이 많고 불꽃놀이 축제를 애지중지해요!'
+            },
+            {
+                id: 'mimi',
+                name: '토끼 미미 🐰',
+                favFood: '당근 당고 🍡',
+                personality: '다정하고 카페에서 공부하는 것을 즐겨요!'
+            }
+        ];
+
+        // Game Controller
+        const Game = {
+            stageIdx: 0,
+            stepIdx: 0,
+            unlockedAnimals: ['momo'],
+            currentSpeechText: '',
+
+            init() {
+                this.bindEvents();
+                this.loadStage(0);
+                this.renderBookModal();
+                this.renderResultCards();
+            },
+
+            bindEvents() {
+                document.getElementById('btn-grammar').onclick = () => {
+                    document.getElementById('grammar-modal').classList.remove('hidden');
+                };
+                document.getElementById('btn-close-modal').onclick = () => {
+                    document.getElementById('grammar-modal').classList.add('hidden');
+                };
+                document.getElementById('btn-open-book').onclick = () => {
+                    this.renderBookModal();
+                    document.getElementById('book-modal').classList.remove('hidden');
+                };
+                document.getElementById('btn-close-book').onclick = () => {
+                    document.getElementById('book-modal').classList.add('hidden');
+                };
+                document.getElementById('btn-start-stage').onclick = () => {
+                    document.getElementById('chapter-cover').classList.add('hidden');
+                    this.renderStep();
+                };
+                document.getElementById('btn-next-step').onclick = () => {
+                    this.stepIdx++;
+                    this.renderStep();
+                };
+                document.getElementById('btn-speak-again').onclick = () => {
+                    if (this.currentSpeechText) {
+                        Speech.speak(this.currentSpeechText);
+                    }
+                };
+                document.getElementById('btn-restart-game').onclick = () => {
+                    document.getElementById('result-modal').classList.add('hidden');
+                    this.unlockedAnimals = ['momo'];
+                    this.loadStage(0);
+                };
+            },
+
+            loadStage(idx) {
+                this.stageIdx = idx;
+                this.stepIdx = 0;
+                const stage = STAGES[idx];
+
+                if (!this.unlockedAnimals.includes(stage.character)) {
+                    this.unlockedAnimals.push(stage.character);
+                }
+
+                document.getElementById('stage-num').innerText = stage.id;
+                document.getElementById('cover-stage-sub').innerText = `STAGE ${stage.id}`;
+                document.getElementById('cover-stage-title').innerText = stage.title;
+                document.getElementById('cover-stage-desc').innerText = `${stage.location}에서 ${stage.speaker}와 함께 추억 변형!`;
+                document.getElementById('location-tag').innerHTML = `<i class="fa-solid fa-location-dot text-pink-400"></i> ${stage.location}`;
+                document.getElementById('stage-bg-svg').innerHTML = stage.bgSvg;
+
+                document.getElementById('chapter-cover').classList.remove('hidden');
+            },
+
+            renderStep() {
+                const stage = STAGES[this.stageIdx];
+                const step = stage.steps[this.stepIdx];
+
+                if (!step) {
+                    if (this.stageIdx + 1 < STAGES.length) {
+                        this.loadStage(this.stageIdx + 1);
+                    } else {
+                        // Grand Final
+                        document.getElementById('result-modal').classList.remove('hidden');
+                    }
+                    return;
+                }
+
+                document.getElementById('speaker-name').innerText = stage.speaker;
+                document.getElementById('speaker-icon').className = `fa-solid ${stage.speakerIcon}`;
+                document.getElementById('character-svg-box').innerHTML = CuteAnimals[stage.character]('happy');
+
+                const quizBox = document.getElementById('quiz-choices-box');
+                const nextBtn = document.getElementById('btn-next-step');
+                quizBox.classList.add('hidden');
+
+                document.getElementById('main-jp-text').innerText = step.jpText;
+                document.getElementById('sub-kr-text').innerText = step.krText;
+
+                this.currentSpeechText = step.speechText || step.jpText;
+                Speech.speak(this.currentSpeechText);
+
+                if (step.type === 'quiz') {
+                    nextBtn.classList.add('hidden');
+                    this.renderQuizChoices(step, stage.character);
+                } else {
+                    nextBtn.classList.remove('hidden');
+                }
+            },
+
+            renderQuizChoices(step, charKey) {
+                const quizBox = document.getElementById('quiz-choices-box');
+                const grid = document.getElementById('choices-grid');
+                grid.innerHTML = '';
+                quizBox.classList.remove('hidden');
+
+                step.options.forEach((opt) => {
+                    const btn = document.createElement('button');
+                    btn.className = "p-3 bg-amber-300 hover:bg-amber-200 text-slate-950 font-extrabold rounded-2xl text-left text-xs sm:text-sm flex justify-between items-center transition shadow border border-amber-400/60 active:scale-95";
+                    btn.innerHTML = `<span>👉 ${opt.text}</span><i class="fa-solid fa-circle-check text-slate-800"></i>`;
+                    btn.onclick = () => this.handleQuiz(opt, charKey);
+                    grid.appendChild(btn);
+                });
+            },
+
+            handleQuiz(chosen, charKey) {
+                const quizBox = document.getElementById('quiz-choices-box');
+                const nextBtn = document.getElementById('btn-next-step');
+
+                if (chosen.correct) {
+                    SoundFX.playCorrect();
+                    document.getElementById('character-svg-box').innerHTML = CuteAnimals[charKey]('heart');
+                    document.getElementById('main-jp-text').innerText = "⭕ " + chosen.text;
+                    document.getElementById('sub-kr-text').innerText = chosen.feedback;
+                    Speech.speak(chosen.text);
+                } else {
+                    SoundFX.playWrong();
+                    document.getElementById('character-svg-box').innerHTML = CuteAnimals[charKey]('sweat');
+                    document.getElementById('main-jp-text').innerText = "❌ 다시 생각해볼까요?";
+                    document.getElementById('sub-kr-text').innerText = chosen.feedback;
+                }
+
+                quizBox.classList.add('hidden');
+                nextBtn.classList.remove('hidden');
+            },
+
+            renderBookModal() {
+                const container = document.getElementById('friends-list-container');
+                container.innerHTML = '';
+
+                ANIMAL_PROFILES.forEach(profile => {
+                    const isUnlocked = this.unlockedAnimals.includes(profile.id);
+                    const card = document.createElement('div');
+                    card.className = `p-3.5 rounded-2xl border flex items-center gap-3 transition ${
+                        isUnlocked 
+                        ? 'bg-slate-800 border-pink-400/60 text-white shadow-md' 
+                        : 'bg-slate-900/60 border-slate-800 text-slate-500'
+                    }`;
+
+                    const miniSvg = isUnlocked ? CuteAnimals[profile.id]('happy') : '<div class="text-3xl text-slate-700"><i class="fa-solid fa-lock"></i></div>';
+
+                    card.innerHTML = `
+                        <div class="w-16 h-16 rounded-xl bg-slate-950/60 p-1 flex items-center justify-center border border-slate-700/50 flex-shrink-0">
+                            ${miniSvg}
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center gap-2 mb-0.5">
+                                <h4 class="font-black text-sm ${isUnlocked ? 'text-amber-300' : 'text-slate-500'}">${profile.name}</h4>
+                                ${isUnlocked ? '<span class="bg-pink-500/20 text-pink-300 border border-pink-500/30 text-[10px] px-2 py-0.5 rounded-full font-bold">친구 획득!</span>' : ''}
+                            </div>
+                            <p class="text-xs ${isUnlocked ? 'text-slate-300' : 'text-slate-600'} mb-1">${isUnlocked ? profile.personality : 'STAGES를 진행하면 만날 수 있어요!'}</p>
+                            <p class="text-[11px] ${isUnlocked ? 'text-pink-300' : 'text-slate-600'} font-semibold"><i class="fa-solid fa-cookie-bite mr-1"></i>좋아하는 것: ${isUnlocked ? profile.favFood : '???'}</p>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            },
+
+            renderResultCards() {
+                document.getElementById('momo-result-card').innerHTML = CuteAnimals.momo('heart');
+                document.getElementById('tama-result-card').innerHTML = CuteAnimals.tama('heart');
+                document.getElementById('mimi-result-card').innerHTML = CuteAnimals.mimi('heart');
+            }
+        };
+
+        // Initialize Game
+        window.onload = () => {
+            Game.init();
+        };
+    </script>
+</body>
+</html>
