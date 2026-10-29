@@ -754,14 +754,17 @@ function shuffleArray(array) {
                     nextBtn.classList.remove('hidden');
                 }
             },
-
-            renderQuizChoices(step, charKey) {
+renderQuizChoices(step, charKey) {
                 const quizBox = document.getElementById('quiz-choices-box');
                 const grid = document.getElementById('choices-grid');
                 grid.innerHTML = '';
                 quizBox.classList.remove('hidden');
 
-                step.options.forEach((opt) => {
+                // 💡 [수정 1] 보기를 무작위로 섞습니다.
+                const shuffledOptions = shuffleArray(step.options);
+
+                // 💡 [수정 2] step.options 대신 shuffledOptions로 버튼을 만듭니다.
+                shuffledOptions.forEach((opt) => {
                     const btn = document.createElement('button');
                     btn.className = "p-3 bg-amber-300 hover:bg-amber-200 text-slate-950 font-extrabold rounded-2xl text-left text-xs sm:text-sm flex justify-between items-center transition shadow border border-amber-400/60 active:scale-95";
                     btn.innerHTML = `<span>👉 ${opt.text}</span><i class="fa-solid fa-circle-check text-slate-800"></i>`;
@@ -773,7 +776,6 @@ function shuffleArray(array) {
             handleQuiz(chosen, charKey) {
                 const quizBox = document.getElementById('quiz-choices-box');
                 const nextBtn = document.getElementById('btn-next-step');
-
                 if (chosen.correct) {
                     SoundFX.playCorrect();
                     document.getElementById('character-svg-box').innerHTML = CuteAnimals[charKey]('heart');
