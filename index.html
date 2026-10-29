@@ -682,6 +682,7 @@ function shuffleArray(array) {
                 };
                 document.getElementById('btn-start-stage').onclick = () => {
                     document.getElementById('chapter-cover').classList.add('hidden');
+                    this.hasMistake = false; 
                     this.renderStep();
                 };
                 document.getElementById('btn-next-step').onclick = () => {
@@ -705,9 +706,11 @@ function shuffleArray(array) {
                 this.stepIdx = 0;
                 const stage = STAGES[idx];
 
-                if (!this.unlockedAnimals.includes(stage.character)) {
-                    this.unlockedAnimals.push(stage.character);
-                }
+               if (!this.hasMistake) {
+    if (!this.unlockedAnimals.includes(stage.character)) {
+        this.unlockedAnimals.push(stage.character);
+    }
+}
 
                 document.getElementById('stage-num').innerText = stage.id;
                 document.getElementById('cover-stage-sub').innerText = `STAGE ${stage.id}`;
@@ -787,6 +790,7 @@ renderQuizChoices(step, charKey) {
                     document.getElementById('character-svg-box').innerHTML = CuteAnimals[charKey]('sweat');
                     document.getElementById('main-jp-text').innerText = "❌ 다시 생각해볼까요?";
                     document.getElementById('sub-kr-text').innerText = chosen.feedback;
+                    this.hasMistake = true;
                 }
 
                 quizBox.classList.add('hidden');
