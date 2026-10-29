@@ -706,11 +706,6 @@ function shuffleArray(array) {
                 this.stepIdx = 0;
                 const stage = STAGES[idx];
 
-               if (!this.hasMistake) {
-    if (!this.unlockedAnimals.includes(stage.character)) {
-        this.unlockedAnimals.push(stage.character);
-    }
-}
 
                 document.getElementById('stage-num').innerText = stage.id;
                 document.getElementById('cover-stage-sub').innerText = `STAGE ${stage.id}`;
@@ -756,6 +751,14 @@ function shuffleArray(array) {
                 } else {
                     nextBtn.classList.remove('hidden');
                 }
+// 💡 753번째 행 바로 밑에 추가
+if (this.stepIdx >= stage.steps.length - 1) {
+    if (!this.hasMistake) {
+        if (!this.unlockedAnimals.includes(stage.character)) {
+            this.unlockedAnimals.push(stage.character);
+        }
+    }
+}
             },
 renderQuizChoices(step, charKey) {
                 const quizBox = document.getElementById('quiz-choices-box');
