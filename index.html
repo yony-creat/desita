@@ -760,10 +760,10 @@ renderQuizChoices(step, charKey) {
                 grid.innerHTML = '';
                 quizBox.classList.remove('hidden');
 
-                // 💡 [수정 1] 보기를 무작위로 섞습니다.
-                const shuffledOptions = shuffleArray(step.options);
+                // 💡 [...step.options]로 복사본을 만들어 섞습니다.
+                // 셔플 함수 호출 대신 inline으로 안전하게 섞는 방식입니다.
+                const shuffledOptions = [...step.options].sort(() => Math.random() - 0.5);
 
-                // 💡 [수정 2] step.options 대신 shuffledOptions로 버튼을 만듭니다.
                 shuffledOptions.forEach((opt) => {
                     const btn = document.createElement('button');
                     btn.className = "p-3 bg-amber-300 hover:bg-amber-200 text-slate-950 font-extrabold rounded-2xl text-left text-xs sm:text-sm flex justify-between items-center transition shadow border border-amber-400/60 active:scale-95";
