@@ -256,14 +256,24 @@
 
     <!-- Core Logic JavaScript -->
     <script>
-        // Web Speech API - Japanese TTS
+     
+       // Web Speech API - Japanese TTS
         const Speech = {
             speak(text) {
                 if (!('speechSynthesis' in window)) return;
                 try {
                     window.speechSynthesis.cancel();
-                    const cleanJp = text.replace(/[^\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF。？]/g, '');
+
+                    // 1. 일본어 이외 특수문자 제거
+                    let cleanJp = text.replace(/[^\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF。？\s]/g, '');
                     if (!cleanJp) return;
+
+                    // 2. 📱 모바일 TTS 발음 보정 (조사 'は' -> 'わ', 'へ' -> 'え')
+                    cleanJp = cleanJp
+                        .replace(/([가-힣a-zA-A0-9\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF])は(\s|$|[\?\!。？])/g, '$1わ$2')
+                        .replace(/こんにちは/g, 'こんにちわ')
+                        .replace(/こんばんは/g, 'こんばんわ')
+                        .replace(/へ(\s|$|[\?\!。？])/g, 'え$1');
 
                     const ut = new SpeechSynthesisUtterance(cleanJp);
                     ut.lang = 'ja-JP';
@@ -275,7 +285,6 @@
                 }
             }
         };
-
         // Web Audio Synthesizer (No external audio files needed)
         const SoundFX = {
             ctx: null,
